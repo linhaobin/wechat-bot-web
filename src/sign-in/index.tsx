@@ -4,13 +4,13 @@ const FormItem = Form.Item
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { withReducer } from '../store'
-import { signIn } from '../store/reducers/user'
-
+import { RootState } from '../store'
+import * as sessionActions from '../store/modules/session/actions'
+import * as sessionSelectors from '../store/modules/session/selectors'
 import './index.css'
 
 interface Props extends FormComponentProps {
-  actions: { signIn: typeof signIn }
+  actions: { signIn: typeof sessionActions.signIn }
 }
 
 class NormalLoginForm extends React.Component<Props> {
@@ -59,16 +59,19 @@ class NormalLoginForm extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = (state: RootState) => {
+  return {
+    inProgress: sessionSelectors.sessionSelector(state).signInInProgress
+  }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    actions: bindActionCreators({ signIn }, dispatch)
+    actions: bindActionCreators({ signIn: sessionActions.signIn }, dispatch)
   }
 }
 
-export default withReducer('signIn', (state = {}) => state)(
-  connect(mapStateToProps, mapDispatchToProps)(Form.create()(NormalLoginForm))
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Form.create()(NormalLoginForm))

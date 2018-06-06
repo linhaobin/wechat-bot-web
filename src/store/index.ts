@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, Reducer, Store } from 'redux'
+import { applyMiddleware, createStore, Reducer, ReducersMapObject, Store } from 'redux'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 import createReducer from './rootReducer'
@@ -6,7 +6,7 @@ export { default as withReducer } from './withReducer'
 
 const logger = createLogger({})
 
-export type StoreState = ReturnType<ReturnType<typeof createReducer>>
+export type RootState = ReturnType<ReturnType<typeof createReducer>>
 
 export default function configureStore(initialState: object = {}) {
   const store = createStore(createReducer(), initialState, applyMiddleware(thunk, logger))
@@ -14,9 +14,17 @@ export default function configureStore(initialState: object = {}) {
   return store
 }
 
-export function injectAsyncReducer(store: Store, name: string, asyncReducer: Reducer) {
+export function injectAsyncReducer(store: Store, options: string | ReducersMapObject, asyncReducer?: Reducer) {
   const asyncReducers = getAsyncReducers(store)
-  asyncReducers[name] = asyncReducer
+  if (typeof options === 'string') {
+    if (!asyncReducer) throw new Error('参数错误，第一个参数为string时，第二参数不能为空')
+
+    asyncReducers[name] = asyncReducer
+  } else {
+    Object.keys(options).forEach(key => {
+      asyncReducers[key] = options[key]
+    })
+  }
   store.replaceReducer(createReducer(asyncReducers))
 }
 

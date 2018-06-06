@@ -1,13 +1,9 @@
-import { combineReducers } from 'redux'
-import user, { State as UserState } from './reducers/user'
+import { combineReducers, ReducersMapObject } from 'redux'
+import session from './modules/session/reducers'
 
-export interface State {
-  user: UserState
-}
-
-const createReducer = (asyncReducers?: any) =>
-  combineReducers<State>({
-    user,
+const createReducer = (asyncReducers?: ReducersMapObject) =>
+  combineReducers({
+    ...session,
     ...asyncReducers
   })
 

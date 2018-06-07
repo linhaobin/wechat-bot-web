@@ -4,12 +4,13 @@ const FormItem = Form.Item
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { RootState } from '../store'
-import * as sessionActions from '../store/modules/session/actions'
-import * as sessionSelectors from '../store/modules/session/selectors'
-import './index.css'
+import { RootState } from 'src/store'
+import * as sessionActions from 'src/store/modules/session/actions'
+import * as sessionSelectors from 'src/store/modules/session/selectors'
+import './styles.css'
 
 interface Props extends FormComponentProps {
+  inProgress: boolean
   actions: { signIn: typeof sessionActions.signIn }
 }
 
@@ -49,7 +50,7 @@ class NormalLoginForm extends React.Component<Props> {
             )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button type="primary" htmlType="submit" className="login-form-button" loading={this.props.inProgress}>
               登录
             </Button>
           </FormItem>

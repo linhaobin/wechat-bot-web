@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { Action, ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
+import { RootState } from 'src/store'
 import { action, ActionType } from 'typesafe-actions'
-import { RootState } from '../../index'
 import * as Const from './constant'
 
 /**

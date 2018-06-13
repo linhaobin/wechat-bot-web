@@ -3,13 +3,15 @@ import { FormComponentProps } from 'antd/lib/form'
 const FormItem = Form.Item
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { compose } from 'redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { RootState } from 'src/store'
 import * as sessionActions from 'src/store/modules/session/actions'
 import * as sessionSelectors from 'src/store/modules/session/selectors'
 import './styles.css'
 
-interface Props extends FormComponentProps {
+interface Props extends FormComponentProps, RouteComponentProps<any> {
   inProgress: boolean
   actions: { signIn: typeof sessionActions.signIn }
 }
@@ -23,7 +25,14 @@ class NormalLoginForm extends React.Component<Props> {
         return
       }
 
-      this.props.actions.signIn(values)
+      const result = await this.props.actions.signIn(values)
+
+      if (result) {
+        // tslint:disable-next-line
+        console.info(result)
+        return
+      }
+      // this.props.history.push('/')
     })
   }
 
@@ -72,7 +81,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Form.create()(NormalLoginForm))

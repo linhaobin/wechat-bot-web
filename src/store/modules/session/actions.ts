@@ -1,4 +1,5 @@
-import { Action, ActionCreator } from 'redux'
+import { push } from 'react-router-redux'
+import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { signInApi } from 'src/api/sign'
 import { RootState } from 'src/store'
@@ -24,15 +25,14 @@ export const signInFail = (error: any) => action(Const.SIGNIN_FAIL, error)
 /**
  * signInActions
  */
-export type SignInActions = ActionType<typeof signInInProgress | typeof signInSuccess | typeof signInFail>
+export type SignInActions = ActionType<typeof signInInProgress | typeof signInSuccess | typeof signInFail | typeof push>
 
 /**
  * signIn
  */
-export const signIn: ActionCreator<ThunkAction<Promise<Action>, RootState, undefined, SignInActions>> = (data: {
-  username: string
-  password: string
-}) => async dispatch => {
+export const signIn: ActionCreator<
+  ThunkAction<Promise<{ error?: any }>, RootState, undefined, SignInActions>
+> = (data: { username: string; password: string }) => async dispatch => {
   dispatch(signInInProgress())
 
   try {
@@ -42,8 +42,14 @@ export const signIn: ActionCreator<ThunkAction<Promise<Action>, RootState, undef
       throw resp.data.error
     }
 
-    return dispatch(signInSuccess(resp.data))
+    await dispatch(signInSuccess(resp.data))
+
+    dispatch(push('/'))
+
+    return {}
   } catch (err) {
-    return dispatch(signInFail(err))
+    dispatch(signInFail(err))
+
+    return { error: err }
   }
 }

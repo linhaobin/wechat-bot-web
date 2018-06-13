@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import * as sha1 from 'sha1'
 import { apiUrl } from 'src/config'
 import store from 'src/store'
@@ -9,17 +9,20 @@ export const SIGNATURE_KEY = 'signature'
 export const TIMESTAMP_KEY = 'timestamp'
 export const NONCE_KEY = 'nonce'
 
+export interface RequestConfig extends AxiosRequestConfig {
+  notSignIn?: boolean
+}
 // api url
 axios.defaults.baseURL = apiUrl
 // content-type default to json
 axios.defaults.headers = { 'Content-Type': 'application/json' }
 // signature
 axios.interceptors.request.use(
-  config => {
+  (config: RequestConfig) => {
     const loginSession = getSession(store.getState())
 
     let signHeaders
-    if (loginSession) {
+    if (loginSession && config.notSignIn) {
       signHeaders = generateSignatureHeaders({ sessionId: loginSession.id, accessToken: loginSession.accessToken })
     } else {
       signHeaders = generateSignatureHeaders()

@@ -1,10 +1,18 @@
 import { Reducer } from 'redux'
+import { PersistConfig, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import { SignInActions } from './actions'
 import * as Const from './constant'
 
-interface SessionState {
+const persistConfig: PersistConfig = {
+  key: 'session',
+  storage,
+  whitelist: ['session']
+}
+
+export interface SessionState {
   readonly signInInProgress: boolean
-  readonly accessToken?: string
+  readonly session?: Session
   readonly user?: object
 }
 
@@ -18,11 +26,9 @@ const reducer: Reducer<SessionState, SignInActions> = (state = initialState, act
       return state
 
     case Const.SIGNIN_SUCCESS:
-      const {
-        payload: { accessToken }
-      } = action
+      const { payload: session } = action
       return {
-        accessToken,
+        session,
         ...state
       }
 
@@ -34,6 +40,12 @@ const reducer: Reducer<SessionState, SignInActions> = (state = initialState, act
   }
 }
 
+export interface Session {
+  id: string
+  accessToken: string
+  userId: string
+}
+
 export default {
-  [Const.namespace]: reducer
+  [Const.namespace]: persistReducer(persistConfig, reducer)
 }

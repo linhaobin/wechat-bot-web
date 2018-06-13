@@ -1,5 +1,10 @@
 import * as React from 'react'
 
+// components
+import { Button } from 'antd'
+import { Link } from 'react-router-dom'
+import LoadableRoute from 'src/components/router/LoadableRoute'
+
 import logo from '../../logo.svg'
 
 const Home: React.SFC = props => {
@@ -12,6 +17,35 @@ const Home: React.SFC = props => {
       <p className="App-intro">
         To get started, edit <code>src/App.tsx</code> and save to reload.
       </p>
+
+      <ul>
+        <ol>
+          <Link to="/">
+            <Button>Home</Button>
+          </Link>
+        </ol>
+        <ol>
+          <Link to="/game">Game</Link>
+        </ol>
+        <ol>
+          <Link to="/product-table">ProductTable</Link>
+        </ol>
+      </ul>
+      <LoadableRoute
+        path="/game"
+        component={() => import('src/containers/game')}
+        render={Component => {
+          return <Component />
+        }}
+      />
+      <LoadableRoute
+        path="/product-table"
+        component={() => import('src/containers/filterableProductTable')}
+        loading={() => <div>Loading !!!!</div>}
+        children={Component => {
+          return <Component />
+        }}
+      />
     </div>
   )
 }

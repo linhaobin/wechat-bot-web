@@ -62,7 +62,7 @@ class NormalLoginForm extends React.Component<Props> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    inProgress: sessionSelectors.sessionSelector(state).signInInProgress
+    inProgress: sessionSelectors.getSessionState(state).signInInProgress
   }
 }
 

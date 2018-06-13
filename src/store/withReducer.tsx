@@ -1,7 +1,7 @@
 import { object } from 'prop-types'
 import * as React from 'react'
 import { Reducer, ReducersMapObject } from 'redux'
-import { injectAsyncReducer } from './index'
+import { injectAsyncReducer } from './asyncReduces'
 
 interface WithReducer {
   (reducers: ReducersMapObject): <P>(WrappedComponent: React.ComponentType<P>) => React.SFC<P>

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { RootState } from 'src/store'
+import { RootState } from '~/store'
 import { namespace } from './constant'
 
 export const getSessionState = (state: RootState) => state[namespace]

@@ -1,5 +1,10 @@
 export const namespace = 'app/session'
 
-export const SIGNIN_INPROGRESS = 'app/session/SIGNIN_INPROGRESS'
-export const SIGNIN_SUCCESS = 'app/session/SIGNIN_SUCCESS'
-export const SIGNIN_FAIL = 'app/session/SIGNIN_FAIL'
+/**
+ * Action Types
+ */
+export enum ActionTypes {
+  SIGN_IN_IN_PROGRESS = 'app/session/SIGN_IN_INPROGRESS',
+  SIGN_IN_SUCCESS = 'app/session/SIGN_IN_SUCCESS',
+  SIGN_IN_FAIL = 'app/session/SIGN_IN_FAIL'
+}

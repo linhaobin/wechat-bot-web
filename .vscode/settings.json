@@ -1,5 +1,6 @@
 {
   "path-intellisense.mappings": {
-    "src": "${workspaceRoot}/src"
-  }
+    // "src": "${workspaceRoot}/src"
+  },
+  "npm-intellisense.recursivePackageJsonLookup": false
 }

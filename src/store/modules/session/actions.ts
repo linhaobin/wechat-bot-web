@@ -1,55 +1,52 @@
-import { push } from 'react-router-redux'
 import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
-import { signInApi } from 'src/api/sign'
-import { RootState } from 'src/store'
 import { action, ActionType } from 'typesafe-actions'
-import * as Const from './constant'
-import { Session } from './reducers'
+import { signInApi } from '~/api/sign'
+import Session from '~/model/session'
+import { RootState } from '~/store'
+import { ActionTypes } from './constant'
 
 /**
  * signInInProgress
  */
-export const signInInProgress = () => action(Const.SIGNIN_INPROGRESS)
+export const signInInProgress = () => action(ActionTypes.SIGN_IN_IN_PROGRESS)
 
 /**
  * signInSuccess
  */
-export const signInSuccess = (session: Session) => action(Const.SIGNIN_SUCCESS, session)
+export const signInSuccess = (session: Session) => action(ActionTypes.SIGN_IN_SUCCESS, session)
 
 /**
  * signInFail
  */
-export const signInFail = (error: any) => action(Const.SIGNIN_FAIL, error)
+export const signInFail = (error: { [key: string]: any }) => action(ActionTypes.SIGN_IN_FAIL, error)
 
 /**
  * signInActions
  */
-export type SignInActions = ActionType<typeof signInInProgress | typeof signInSuccess | typeof signInFail | typeof push>
+export type SignInActions = ActionType<typeof signInInProgress | typeof signInSuccess | typeof signInFail>
 
 /**
  * signIn
  */
-export const signIn: ActionCreator<
-  ThunkAction<Promise<{ error?: any }>, RootState, undefined, SignInActions>
-> = (data: { username: string; password: string }) => async dispatch => {
+export interface SignInParams {
+  username: string
+  password: string
+}
+export type SignResult = Promise<ActionType<typeof signInSuccess | typeof signInFail>>
+export type DispatchSignIn = (params: SignInParams) => SignResult
+export const signIn: ActionCreator<ThunkAction<SignResult, RootState, undefined, SignInActions>> = (
+  params: SignInParams
+) => async dispatch => {
   dispatch(signInInProgress())
 
   try {
-    const resp = await signInApi(data)
+    const resp = await signInApi(params)
 
-    if (resp.data.error) {
-      throw resp.data.error
-    }
+    const data = resp.data
 
-    await dispatch(signInSuccess(resp.data))
-
-    dispatch(push('/'))
-
-    return {}
+    return dispatch(signInSuccess(data))
   } catch (err) {
-    dispatch(signInFail(err))
-
-    return { error: err }
+    return dispatch(signInFail(err))
   }
 }

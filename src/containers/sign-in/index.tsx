@@ -4,16 +4,17 @@ const FormItem = Form.Item
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { compose } from 'redux'
-import { bindActionCreators, Dispatch } from 'redux'
-import { RootState } from 'src/store'
-import * as sessionActions from 'src/store/modules/session/actions'
-import * as sessionSelectors from 'src/store/modules/session/selectors'
-import './styles.css'
+import { bindActionCreators, compose, Dispatch } from 'redux'
 
+import { RootState } from '~/store'
+import * as sessionActions from '~/store/modules/session/actions'
+import { ActionTypes } from '~/store/modules/session/constant'
+import * as sessionSelectors from '~/store/modules/session/selectors'
+
+import './styles.css'
 interface Props extends FormComponentProps, RouteComponentProps<any> {
   inProgress: boolean
-  actions: { signIn: typeof sessionActions.signIn }
+  actions: { signIn: sessionActions.DispatchSignIn }
 }
 
 class NormalLoginForm extends React.Component<Props> {
@@ -25,14 +26,15 @@ class NormalLoginForm extends React.Component<Props> {
         return
       }
 
-      const result = await this.props.actions.signIn(values)
+      const action = await this.props.actions.signIn(values)
 
-      if (result) {
+      if (action.type === ActionTypes.SIGN_IN_FAIL) {
         // tslint:disable-next-line
-        console.info(result)
+        console.info('登录失败', action.payload)
         return
       }
-      // this.props.history.push('/')
+
+      this.props.history.push('/')
     })
   }
 

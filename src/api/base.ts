@@ -1,13 +1,22 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import * as sha1 from 'sha1'
-import { apiUrl } from 'src/config'
-import store from 'src/store'
-import { getSession } from 'src/store/modules/session/selectors'
+import { apiUrl } from '~/config'
+import store from '~/store'
+import { getSession } from '~/store/modules/session/selectors'
 
 export const SESSION_ID_KEY = 'session-id'
 export const SIGNATURE_KEY = 'signature'
 export const TIMESTAMP_KEY = 'timestamp'
 export const NONCE_KEY = 'nonce'
+
+// export type ApiResp<T> = T | Partial<ApiFailResp>
+// export const isError = (data: ApiResp<any>): data is ApiFailResp => {
+//   if ((data as any).error) {
+//     return true
+//   }
+
+//   return false
+// }
 
 export interface RequestConfig extends AxiosRequestConfig {
   notSignIn?: boolean
@@ -16,6 +25,7 @@ export interface RequestConfig extends AxiosRequestConfig {
 axios.defaults.baseURL = apiUrl
 // content-type default to json
 axios.defaults.headers = { 'Content-Type': 'application/json' }
+
 // signature
 axios.interceptors.request.use(
   (config: RequestConfig) => {
@@ -41,11 +51,45 @@ axios.interceptors.request.use(
   }
 )
 
-interface GenerateSignatureHeaders {
-  (): Headers
-  (params: Params): Headers & { sessionId: string }
+// response
+axios.interceptors.response.use(
+  response => {
+    const { data } = response
+
+    if (data && data.error) {
+      return Promise.reject(data)
+    }
+
+    return data
+  },
+  error => {
+    if (error && error.code && error.message) {
+      return Promise.reject(error)
+    }
+    if (process.env.NODE_ENV !== 'production') {
+      // tslint:disable-next-line
+      console.error(error)
+    }
+    return Promise.reject({
+      code: 500,
+      message: '服务器繁忙'
+    })
+  }
+)
+interface SignatureHeaders {
+  nonce: string
+  timestamp: string
+  signature: string
 }
-export const generateSignatureHeaders: GenerateSignatureHeaders = (params?: Params) => {
+interface GenerateSignatureHeadersParams {
+  accessToken: string
+  sessionId: string
+}
+interface GenerateSignatureHeaders {
+  (): SignatureHeaders
+  (params: GenerateSignatureHeadersParams): SignatureHeaders & { sessionId: string }
+}
+export const generateSignatureHeaders: GenerateSignatureHeaders = (params?: GenerateSignatureHeadersParams) => {
   const nonce = createNonceStr()
   const timestamp = createTimestamp()
 
@@ -68,16 +112,6 @@ export const generateSignatureHeaders: GenerateSignatureHeaders = (params?: Para
   }
 
   return result
-}
-
-interface Params {
-  accessToken: string
-  sessionId: string
-}
-interface Headers {
-  nonce: string
-  timestamp: string
-  signature: string
 }
 
 // 生成随机数字符串

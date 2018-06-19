@@ -1,5 +1,3 @@
-import { History } from 'history'
-import { routerMiddleware } from 'react-router-redux'
 import { applyMiddleware, createStore } from 'redux'
 import { createLogger } from 'redux-logger'
 import { persistStore } from 'redux-persist'
@@ -12,10 +10,19 @@ const logger = createLogger({})
 
 export type RootState = ReturnType<ReturnType<typeof createReducer>>
 
-export default function configureStore(initialState: object = {}, history: History) {
-  const router = routerMiddleware(history)
-  const store = createStore(createReducer(), initialState, applyMiddleware(thunk, logger, router))
+export default function configureStore(initialState: object = {}) {
+  const store = createStore(createReducer(), initialState, applyMiddleware(thunk, logger))
   initAsyncReducers(store)
   const persistor = persistStore(store)
+
+  if (module.hot) {
+    module.hot.accept('./rootReducer', () => {
+      // This fetch the new state of the above reducers.
+      const nextCreateReducer = require('./rootReducer')
+      const nextRootReducer = nextCreateReducer()
+      store.replaceReducer(nextRootReducer)
+    })
+  }
+
   return { store, persistor }
 }

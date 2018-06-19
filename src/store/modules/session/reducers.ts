@@ -1,8 +1,9 @@
 import { Reducer } from 'redux'
 import { PersistConfig, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import Session from '~/model/session'
 import { SignInActions } from './actions'
-import * as Const from './constant'
+import { ActionTypes, namespace } from './constant'
 
 const persistConfig: PersistConfig = {
   key: 'session',
@@ -22,17 +23,17 @@ const initialState: SessionState = {
 
 const reducer: Reducer<SessionState, SignInActions> = (state = initialState, action) => {
   switch (action.type) {
-    case Const.SIGNIN_INPROGRESS:
+    case ActionTypes.SIGN_IN_IN_PROGRESS:
       return state
 
-    case Const.SIGNIN_SUCCESS:
+    case ActionTypes.SIGN_IN_SUCCESS:
       const { payload: session } = action
       return {
         session,
         ...state
       }
 
-    case Const.SIGNIN_FAIL:
+    case ActionTypes.SIGN_IN_FAIL:
       return state
 
     default:
@@ -40,12 +41,6 @@ const reducer: Reducer<SessionState, SignInActions> = (state = initialState, act
   }
 }
 
-export interface Session {
-  id: string
-  accessToken: string
-  userId: string
-}
-
 export default {
-  [Const.namespace]: persistReducer(persistConfig, reducer)
+  [namespace]: persistReducer(persistConfig, reducer)
 }

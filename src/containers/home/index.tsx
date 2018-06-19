@@ -3,7 +3,7 @@ import * as React from 'react'
 // components
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
-import LoadableRoute from 'src/components/router/LoadableRoute'
+import LoadableRoute from '~/components/router/LoadableRoute'
 
 import logo from '../../logo.svg'
 
@@ -33,14 +33,14 @@ const Home: React.SFC = props => {
       </ul>
       <LoadableRoute
         path="/game"
-        component={() => import('src/containers/game')}
+        component={() => import('~/containers/game')}
         render={Component => {
           return <Component />
         }}
       />
       <LoadableRoute
         path="/product-table"
-        component={() => import('src/containers/filterableProductTable')}
+        component={() => import('~/containers/filterableProductTable')}
         loading={() => <div>Loading !!!!</div>}
         children={Component => {
           return <Component />

@@ -1,5 +1,7 @@
-export default interface Session {
+export interface Session {
   id: string
-  accessToken: string
   userId: string
+  accessToken: string
+  expire: number
+  expireAt: number
 }

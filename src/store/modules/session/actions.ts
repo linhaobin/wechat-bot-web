@@ -2,7 +2,7 @@ import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { action, ActionType } from 'typesafe-actions'
 import { signInApi } from '~/api/sign'
-import Session from '~/model/session'
+import { Session } from '~/model/session'
 import { RootState } from '~/store'
 import { ActionTypes } from './constant'
 
@@ -41,9 +41,7 @@ export const signIn: ActionCreator<ThunkAction<SignResult, RootState, undefined,
   dispatch(signInInProgress())
 
   try {
-    const resp = await signInApi(params)
-
-    const data = resp.data
+    const data = await signInApi(params)
 
     return dispatch(signInSuccess(data))
   } catch (err) {

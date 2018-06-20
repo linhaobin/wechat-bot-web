@@ -1,6 +1,8 @@
 import axios from 'axios'
-import Session from '~/model/session'
-import { RequestConfig } from './base'
+import { RequestConfig } from '~/api'
+import { Session, User } from '~/model'
 
 export const signInApi = (data: { username: string; password: string }) =>
-  axios.post<Session>('sign/sign-in', data, { notSignIn: true } as RequestConfig)
+  axios.post<Session>('sign/sign-in', data, { notSignIn: true } as RequestConfig).then(r => r.data)
+
+export const getUser = () => axios.get<User>('sign/get-user').then(r => r.data)

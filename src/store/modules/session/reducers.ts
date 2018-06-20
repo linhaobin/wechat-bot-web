@@ -1,7 +1,7 @@
 import { Reducer } from 'redux'
 import { PersistConfig, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import Session from '~/model/session'
+import { Session } from '~/model/session'
 import { SignInActions } from './actions'
 import { ActionTypes, namespace } from './constant'
 

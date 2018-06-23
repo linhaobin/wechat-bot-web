@@ -1,0 +1,9 @@
+.layout_main-menu {
+  border-right: 1px solid #e8e8e8;
+  overflow: hidden;
+}
+
+.layout_main-menu .ant-layout-sider-trigger {
+  border-top: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+}

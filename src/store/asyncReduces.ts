@@ -1,4 +1,5 @@
 import { Reducer, ReducersMapObject, Store } from 'redux'
+import { Persistor } from 'redux-persist'
 import createReducer from './rootReducer'
 
 export function injectAsyncReducer(store: Store, options: string | ReducersMapObject, asyncReducer?: Reducer) {
@@ -13,10 +14,12 @@ export function injectAsyncReducer(store: Store, options: string | ReducersMapOb
     })
   }
   store.replaceReducer(createReducer(asyncReducers))
+  ;(store as AsyncStore).persistor.persist()
 }
 
-export function initAsyncReducers(store: Store) {
+export function initAsyncReducers(store: Store, persistor: Persistor) {
   ;(store as AsyncStore).asyncReducers = {}
+  ;(store as AsyncStore).persistor = persistor
 }
 
 // async reducers
@@ -24,6 +27,7 @@ interface AsyncStore extends Store {
   asyncReducers: {
     [key: string]: Reducer
   }
+  persistor: Persistor
 }
 
 function getAsyncReducers(store: Store) {

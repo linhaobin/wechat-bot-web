@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosInterceptorManager, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosInterceptorManager, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { apiUrl } from '~/config'
 import { generateSignatureHeaders } from '~/helper/api/signature'
 import store from '~/store'
@@ -67,22 +67,19 @@ request.interceptors.response.use(
 
 export default request
 
-type Request = Overwrite<
-  AxiosInstance,
-  {
-    (config: RequestConfig): AxiosPromise
-    (url: string, config?: RequestConfig): AxiosPromise
-    defaults: AxiosRequestConfig
-    interceptors: {
-      request: AxiosInterceptorManager<RequestConfig>
-      response: AxiosInterceptorManager<AxiosResponse>
-    }
-    request<T = any>(config: RequestConfig): Promise<T>
-    get<T = any>(url: string, config?: RequestConfig): Promise<T>
-    delete(url: string, config?: RequestConfig): Promise<any>
-    head(url: string, config?: RequestConfig): Promise<any>
-    post<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
-    put<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
-    patch<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
+interface Request {
+  (config: RequestConfig): AxiosPromise
+  (url: string, config?: RequestConfig): AxiosPromise
+  defaults: AxiosRequestConfig
+  interceptors: {
+    request: AxiosInterceptorManager<RequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse>
   }
->
+  request<T = any>(config: RequestConfig): Promise<T>
+  get<T = any>(url: string, config?: RequestConfig): Promise<T>
+  delete(url: string, config?: RequestConfig): Promise<any>
+  head(url: string, config?: RequestConfig): Promise<any>
+  post<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
+  put<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
+  patch<T = any>(url: string, data?: any, config?: RequestConfig): Promise<T>
+}

@@ -3,7 +3,7 @@ import { PersistConfig, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { Session } from '~/model/session'
 import { SignInActions } from './actions'
-import { ActionTypes, namespace } from './constant'
+import { ActionTypes, namespace } from './constants'
 
 const persistConfig: PersistConfig = {
   key: 'session',

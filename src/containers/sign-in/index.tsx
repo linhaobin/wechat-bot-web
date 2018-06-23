@@ -8,7 +8,7 @@ import { bindActionCreators, compose, Dispatch } from 'redux'
 
 import { RootState } from '~/store'
 import * as sessionActions from '~/store/modules/session/actions'
-import { ActionTypes } from '~/store/modules/session/constant'
+import { ActionTypes } from '~/store/modules/session/constants'
 import * as sessionSelectors from '~/store/modules/session/selectors'
 
 import './styles.css'

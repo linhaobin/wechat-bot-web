@@ -1,10 +1,14 @@
 import { combineReducers, ReducersMapObject } from 'redux'
-import session from './modules/session/reducers'
+// import layoutReducers from '~/containers/layout/store/reducers'
+import sessionReducers from './modules/session/reducers'
+
+// type AsyncReducers = LayoutReducers
 
 const createReducer = (asyncReducers?: ReducersMapObject) =>
   combineReducers({
-    ...session,
-    ...asyncReducers,
+    ...sessionReducers,
+    // ...layoutReducers,
+    ...asyncReducers
   })
 
 export default createReducer

@@ -4,7 +4,7 @@ import { action, ActionType } from 'typesafe-actions'
 import { signInApi } from '~/api/sign'
 import { Session } from '~/model/session'
 import { RootState } from '~/store'
-import { ActionTypes } from './constant'
+import { ActionTypes } from './constants'
 
 /**
  * signInInProgress

@@ -1,7 +1,7 @@
 import { request } from '~/helper/api'
-import { Session, User } from '~/model'
+import { Session, Wechat } from '~/model'
 
-export const signInApi = (data: { username: string; password: string }) =>
+export const signIn = (data: { username: string; password: string }) =>
   request.post<Session>('sign/sign-in', data, { notSignIn: true })
 
-export const getUser = () => request.get<User>('sign/get-user')
+export const getUser = () => request.get<Wechat>('sign/get-user')

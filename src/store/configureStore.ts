@@ -2,13 +2,10 @@ import { applyMiddleware, createStore } from 'redux'
 import { createLogger } from 'redux-logger'
 import { persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
-import createReducer from './rootReducer'
-export { default as withReducer } from './withReducer'
 import { initAsyncReducers } from './asyncReduces'
+import createReducer from './rootReducer'
 
 const logger = createLogger({})
-
-export type State = ReturnType<ReturnType<typeof createReducer>>
 
 export default function configureStore(initialState: object = {}) {
   const store = createStore(createReducer(), initialState, applyMiddleware(thunk, logger))

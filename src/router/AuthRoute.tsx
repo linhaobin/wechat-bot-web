@@ -1,34 +1,39 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, RouteComponentProps } from 'react-router'
+import { bindActionCreators, Dispatch } from 'redux'
 import { RootState } from '~/store'
-import * as sessionSelectors from '~/store/modules/session/selectors'
+import * as sessionActions from '~/store/modules/session/actions'
 import LoadableRoute, { LoadableRouteProps } from './LoadableRoute'
 
 const mapStateToProps = (state: RootState) => {
+  return {}
+}
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    session: sessionSelectors.getSessionState(state).session
+    checkLogin: bindActionCreators(sessionActions.checkLogin, dispatch)
   }
 }
-type AuthRouteCommonProps = ReturnType<typeof mapStateToProps>
-// export type AuthRoutePropsWithRoute = AuthRouteCommonProps &
-//   RequiredWith<Omit<RouteProps, 'render' | 'children'>, 'component'>
-// export type AuthRoutePropsWithLoadableRoute<Props> = AuthRouteCommonProps & LoadableRouteProps<Props>
-// export type AuthRouteProps<Props> = AuthRoutePropsWithRoute | AuthRoutePropsWithLoadableRoute<Props>
 type ComponentType<Props> = React.ComponentType<Props> | { default: React.ComponentType<Props> }
-export interface AuthRouteProps<Props> extends Omit<LoadableRouteProps<Props>, 'component'>, AuthRouteCommonProps {
+export interface AuthRouteProps<Props> extends Omit<LoadableRouteProps<Props>, 'component'> {
   component: ComponentType<Props> | (() => Promise<ComponentType<Props>>)
 }
 
-const AuthRoute = <Props extends any>(props: AuthRouteProps<Props>): React.ReactElement<Props> => {
-  const { session, component, ...rest } = props
+interface ConnectAuthRouteProps<Props> extends AuthRouteProps<Props> {
+  checkLogin: sessionActions.DispatchGetUser
+}
+
+type AuthRouteType = <Props extends any>(props: AuthRouteProps<Props>) => React.ReactElement<Props>
+type ConnectAuthRouteType = <Props extends any>(props: ConnectAuthRouteProps<Props>) => React.ReactElement<Props>
+const AuthRoute: ConnectAuthRouteType = props => {
+  const { component, ...rest } = props
+  const { checkLogin } = props
 
   return (
     <LoadableRoute
       {...rest}
       component={async () => {
-        // todo
-        const isSignIn = !!session
+        const isSignIn = await checkLogin()
 
         if (isSignIn) {
           if (typeof component === 'function') {
@@ -53,8 +58,7 @@ const AuthRoute = <Props extends any>(props: AuthRouteProps<Props>): React.React
   )
 }
 
-export default connect(mapStateToProps)(AuthRoute)
-
-// function isLoadableRouteProps<Props>(props: AuthRouteProps<Props>): props is AuthRoutePropsWithLoadableRoute<Props> {
-//   return typeof props.component === 'function'
-// }
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthRoute as AuthRouteType)

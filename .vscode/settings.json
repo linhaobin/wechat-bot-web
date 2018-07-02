@@ -2,5 +2,6 @@
   "path-intellisense.mappings": {
     // "src": "${workspaceRoot}/src"
   },
-  "npm-intellisense.recursivePackageJsonLookup": false
+  "npm-intellisense.recursivePackageJsonLookup": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

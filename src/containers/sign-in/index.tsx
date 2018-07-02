@@ -8,7 +8,6 @@ import { bindActionCreators, compose, Dispatch } from 'redux'
 
 import { RootState } from '~/store'
 import * as sessionActions from '~/store/modules/session/actions'
-import { ActionTypes } from '~/store/modules/session/constants'
 import * as sessionSelectors from '~/store/modules/session/selectors'
 
 import './styles.css'
@@ -17,7 +16,7 @@ interface Props extends FormComponentProps, RouteComponentProps<any> {
   actions: { signIn: sessionActions.DispatchSignIn }
 }
 
-class NormalLoginForm extends React.Component<Props> {
+class NormalLoginForm extends React.PureComponent<Props> {
   public handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     this.props.form.validateFields(async (err, values) => {
@@ -26,15 +25,19 @@ class NormalLoginForm extends React.Component<Props> {
         return
       }
 
-      const action = await this.props.actions.signIn(values)
+      try {
+        await this.props.actions.signIn(values)
 
-      if (action.type === ActionTypes.SIGN_IN_FAIL) {
+        // if (action.type === ActionTypes.SIGN_IN_FAIL) {
+
+        // }
+
+        this.props.history.push('/')
+      } catch (err) {
         // tslint:disable-next-line
-        console.info('登录失败', action.payload)
+        console.info('登录失败', err)
         return
       }
-
-      this.props.history.push('/')
     })
   }
 

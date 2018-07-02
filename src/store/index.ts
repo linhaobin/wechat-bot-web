@@ -1,13 +1,11 @@
 import { Store } from 'redux'
-import configureStore, { State } from './configureStore'
+import configureStore from './configureStore'
+
 export * from './asyncReduces'
 export { withReducer } from './withReducer'
-
-import { RootState as LayoutRootState } from '~/containers/layout/store/reducers'
-
 export const { store, persistor } = configureStore({})
 
-export type RootState = State & LayoutRootState
+// export type RootState = State & LayoutState & WechatListState
 
 export { configureStore }
 

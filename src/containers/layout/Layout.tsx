@@ -2,6 +2,8 @@ import * as React from 'react'
 
 // components
 import { Icon, Layout as AntdLayout, Menu } from 'antd'
+import { Switch } from 'react-router'
+import { LoadableRoute } from '~/router'
 
 // store
 import { connect } from 'react-redux'
@@ -24,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type Props = ReturnType<typeof mapStateToProps> & { actions: { collapse: actions.DispatchCollapse } }
 
-class Layout extends React.Component<Props> {
+class Layout extends React.PureComponent<Props> {
   public onCollapse = (collapsed: boolean) => {
     this.props.actions.collapse({ collapsed })
   }
@@ -62,7 +64,9 @@ class Layout extends React.Component<Props> {
           </AntdLayout.Sider>
           {/* 内容 */}
           <AntdLayout.Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-            Content
+            <Switch>
+              <LoadableRoute component={() => import('~/containers/wechat/list/WechatList')} />
+            </Switch>
           </AntdLayout.Content>
         </AntdLayout>
       </AntdLayout>

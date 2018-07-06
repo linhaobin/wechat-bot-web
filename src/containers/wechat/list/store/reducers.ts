@@ -18,7 +18,7 @@ export interface LoginDialog {
 }
 const loginDialog: Reducer<LoginDialog, Actions> = (
   state = {
-    visible: true,
+    visible: false,
     loading: false,
     qrcode: ''
   },

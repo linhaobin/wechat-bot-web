@@ -38,9 +38,9 @@
   version "10.1.4"
   resolved "https://registry.npmjs.org/@types/node/-/node-10.1.4.tgz#606651d3f8a8bec08b8cb262161aab9209f4a29d"
 
-"@types/node@^10.5.0":
-  version "10.5.0"
-  resolved "https://registry.npmjs.org/@types/node/-/node-10.5.0.tgz#f5b61395c09b47ac46aaa1452750c9a72b3d3673"
+"@types/node@^10.5.1":
+  version "10.5.1"
+  resolved "https://registry.npmjs.org/@types/node/-/node-10.5.1.tgz#d578446f4abff5c0b49ade9b4e5274f6badaadfc"
 
 "@types/prop-types@^15.5.3":
   version "15.5.3"
@@ -94,9 +94,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/react@16.4.2":
-  version "16.4.2"
-  resolved "https://registry.npmjs.org/@types/react/-/react-16.4.2.tgz#f1a9cf1ee85221530def2ac26aee20f910a9dac8"
+"@types/react@16.4.6":
+  version "16.4.6"
+  resolved "https://registry.npmjs.org/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
   dependencies:
     csstype "^2.2.0"
 
@@ -244,9 +244,9 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^3.6.4:
-  version "3.6.4"
-  resolved "https://registry.npmjs.org/antd/-/antd-3.6.4.tgz#9a664aa2dcf7e027144934373b85395fb30a3373"
+antd@^3.6.5:
+  version "3.6.5"
+  resolved "https://registry.npmjs.org/antd/-/antd-3.6.5.tgz#bed51a7e8c557a9c6331065087929f8ac4800cb2"
   dependencies:
     array-tree-filter "^2.0.0"
     babel-runtime "6.x"

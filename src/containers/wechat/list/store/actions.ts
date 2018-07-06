@@ -17,7 +17,7 @@ export const changeLoginDialogVisible = (params: { visible: boolean }) =>
  * load qrcode action
  */
 export const loadQrcodeProgress = () => action(ActionTypes.LOAD_LOGIN_QRCODE_IN_PROGRESS)
-export const loadQrcodeSuccess = (loginResult: wechatApi.LoginResult) =>
+export const loadQrcodeSuccess = (loginResult: wechatApi.ScanResult) =>
   action(ActionTypes.LOAD_LOGIN_QRCODE_SUCCESS, loginResult)
 export const loadQrcodeFail = (error: { [key: string]: any }) => action(ActionTypes.LOAD_LOGIN_QRCODE_FAIL, error)
 
@@ -44,7 +44,7 @@ export const openLoginDialog: ActionCreator<
   try {
     dispatch(loadQrcodeProgress())
 
-    const result = await wechatApi.login()
+    const result = await wechatApi.scan()
 
     dispatch(loadQrcodeSuccess(result))
   } catch (error) {

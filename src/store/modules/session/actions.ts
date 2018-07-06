@@ -88,7 +88,7 @@ export const getUser: ActionCreator<
  * checkLogin
  */
 let checkLoginInProgress = false
-let checkLoginListeners: Array<{ resolve: (data: boolean) => void; reject: (data: any) => void }> = []
+const checkLoginListeners: Array<{ resolve: (data: boolean) => void; reject: (data: any) => void }> = []
 export const checkLogin: ActionCreator<ThunkAction<Promise<boolean>, RootState, undefined, Actions>> = () => async (
   dispatch,
   getState
@@ -130,10 +130,8 @@ export const checkLogin: ActionCreator<ThunkAction<Promise<boolean>, RootState, 
     }
 
     function handleResolve(isLogin: boolean) {
-      const listeners = checkLoginListeners
-      checkLoginListeners = []
       checkLoginInProgress = false
-      listeners.forEach(({ resolve: listenerResolve }) => {
+      checkLoginListeners.splice(0).forEach(({ resolve: listenerResolve }) => {
         try {
           listenerResolve(isLogin)
         } catch (error) {

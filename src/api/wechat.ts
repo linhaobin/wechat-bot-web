@@ -2,13 +2,13 @@ import { request } from '~/helper/api'
 import { Wechat } from '~/model'
 
 /**
- * login
+ * scan
  */
-export interface LoginResult {
+export interface ScanResult {
   qrcode: string
   status: number
 }
-export const login = () => request.get<LoginResult>('wechat/login')
+export const scan = () => request.get<ScanResult>('wechat/scan')
 
 /**
  * getList

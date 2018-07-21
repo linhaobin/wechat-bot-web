@@ -12,15 +12,18 @@ type Actions = ActionType<typeof actions>
  */
 export interface LoginDialog {
   visible: boolean
+  id?: string
   qrcode?: string
-  loading: boolean
+  status: number
+  // loading: boolean
   error?: any
 }
 const loginDialog: Reducer<LoginDialog, Actions> = (
   state = {
     visible: false,
-    loading: false,
-    qrcode: ''
+    // loading: false,
+    qrcode: '',
+    status: -1 // -1: loading
   },
   action
 ) => {
@@ -33,25 +36,29 @@ const loginDialog: Reducer<LoginDialog, Actions> = (
       }
 
     case ActionTypes.LOAD_LOGIN_QRCODE_IN_PROGRESS:
+      const { id } = action.payload
       return {
         ...state,
-        loading: true,
-        qrcode: undefined
+        // loading: true,
+        id,
+        qrcode: undefined,
+        status: -1
       }
 
     case ActionTypes.LOAD_LOGIN_QRCODE_SUCCESS:
-      const { qrcode } = action.payload
+      const { qrcode, status } = action.payload
       return {
         ...state,
-        loading: false,
-        qrcode
+        // loading: false,
+        qrcode,
+        status
       }
 
     case ActionTypes.LOAD_LOGIN_QRCODE_FAIL:
       const { error } = action.payload
       return {
         ...state,
-        loading: false,
+        // loading: false,
         error
       }
 

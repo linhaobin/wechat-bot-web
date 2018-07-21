@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import './Game.css'
 
-import Board from '../../components/game/Board'
+import Board from '~/components/game/Board'
 
 interface GameState {
   history: Array<{ squares: string[] }>

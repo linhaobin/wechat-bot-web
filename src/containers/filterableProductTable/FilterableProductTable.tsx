@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import ProductTable from '../../components/filterableProductTable/ProductTable'
-import SearchBar, * as SearchBarType from '../../components/filterableProductTable/SearchBar'
+import ProductTable from '~/components/filterableProductTable/ProductTable'
+import SearchBar, * as SearchBarType from '~/components/filterableProductTable/SearchBar'
 
 export interface FilterableProductTableProps {
   products?: any[]

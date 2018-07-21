@@ -26,7 +26,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     openLoginDialog: bindActionCreators(actions.openLoginDialog, dispatch),
     loadTableData: bindActionCreators(actions.loadTableData, dispatch),
-    closeLoginDialog: bindActionCreators(actions.closeLoginDialog, dispatch)
+    closeLoginDialog: bindActionCreators(actions.closeLoginDialog, dispatch),
+    restart: bindActionCreators(actions.restart, dispatch)
   }
 }
 
@@ -34,6 +35,7 @@ interface Props extends RouteComponentProps<any>, ReturnType<typeof mapStateToPr
   openLoginDialog: actions.DispatchOpenLoginDialog
   closeLoginDialog: actions.DispatchCloseLoginDialog
   loadTableData: actions.DispatchLoadTableData
+  restart: actions.DispatchRestart
 }
 
 class WechatList extends React.PureComponent<Props> {
@@ -61,7 +63,7 @@ class WechatList extends React.PureComponent<Props> {
    * render table
    */
   private renderTable() {
-    const { table } = this.props
+    const { table, restart } = this.props
 
     const columns = [
       {
@@ -86,7 +88,14 @@ class WechatList extends React.PureComponent<Props> {
         key: 'action',
         render: (_: any, record: Wechat) => (
           <span>
-            <a href="javascript:;">重新登录</a>
+            <a
+              href="javascript:;"
+              onClick={() => {
+                restart({ wechatUserId: record.wechatUserId })
+              }}
+            >
+              重新登录
+            </a>
             {record.status === WechatStatus.Login && (
               <React.Fragment>
                 <Divider type="vertical" />

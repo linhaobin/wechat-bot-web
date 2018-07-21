@@ -11,6 +11,12 @@ export const enum ActionTypes {
   SIGN_IN_SUCCESS = 'app/session/SIGN_IN_SUCCESS',
   SIGN_IN_FAIL = 'app/session/SIGN_IN_FAIL',
   /**
+   * sign out
+   */
+  SIGN_OUT_IN_PROGRESS = 'app/session/SIGN_OUT_IN_PROGRESS',
+  SIGN_OUT_SUCCESS = 'app/session/SIGN_OUT_SUCCESS',
+  SIGN_OUT_FAIL = 'app/session/SIGN_OUT_FAIL',
+  /**
    * get user
    */
   GET_USER_IN_PROGRESS = 'app/session/GET_USER_IN_PROGRESS',

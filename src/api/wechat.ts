@@ -2,18 +2,18 @@ import { request } from '~/helper/api'
 import { Wechat } from '~/model'
 
 /**
- * scan
- */
-export interface ScanResult {
-  qrcode: string
-  status: number
-}
-export const scan = () => request.get<ScanResult>('wechat/scan')
-
-/**
  * getList
  */
 export interface GetListResult {
   wechats: Wechat[]
 }
 export const getList = () => request.get<GetListResult>('wechat')
+/**
+ * scan
+ */
+export const scan = (data: { id: string }) => request.post<void>('wechat/scan', data)
+
+/**
+ * restart
+ */
+export const restart = (data: { wechatUserId: string }) => request.post<void>('wechat/restart', data)

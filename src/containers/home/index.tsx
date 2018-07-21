@@ -5,7 +5,7 @@ import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 
 import * as signApi from '~/api/sign'
-import LoadableRoute from '~/components/router/LoadableRoute'
+import LoadableRoute from '~/router/LoadableRoute'
 
 import logo from '../../logo.svg'
 

@@ -14,6 +14,12 @@ export const signInInProgress = () => action(ActionTypes.SIGN_IN_IN_PROGRESS)
 export const signInSuccess = (session: Session) => action(ActionTypes.SIGN_IN_SUCCESS, session)
 export const signInFail = (error: { [key: string]: any }) => action(ActionTypes.SIGN_IN_FAIL, error)
 /**
+ * signOutInProgress / signOutSuccess / signOutFail
+ */
+export const signOutInProgress = () => action(ActionTypes.SIGN_OUT_IN_PROGRESS)
+export const signOutSuccess = () => action(ActionTypes.SIGN_OUT_SUCCESS)
+export const signOutFail = (error: { [key: string]: any }) => action(ActionTypes.SIGN_OUT_FAIL, error)
+/**
  * getUserInProgress / getUserSuccess / getUserFail
  */
 export const getUserInProgress = () => action(ActionTypes.GET_USER_IN_PROGRESS)
@@ -27,13 +33,16 @@ export type Actions = ActionType<
   | typeof signInInProgress
   | typeof signInSuccess
   | typeof signInFail
+  | typeof signOutInProgress
+  | typeof signOutSuccess
+  | typeof signOutFail
   | typeof getUserInProgress
   | typeof getUserSuccess
   | typeof getUserFail
 >
 
 /**
- * signIn
+ * sign in
  */
 export interface SignInParams {
   username: string
@@ -58,7 +67,26 @@ export const signIn: ActionCreator<ThunkAction<SignResult, RootState, undefined,
 }
 
 /**
- * getUser
+ * sign out
+ */
+export type DispatchSignOut = () => void
+export const signOut: ActionCreator<ThunkAction<void, RootState, undefined, Actions>> = (
+  params: SignInParams
+) => async dispatch => {
+  try {
+    dispatch(signOutInProgress())
+
+    await signApi.signOut()
+
+    dispatch(signOutSuccess())
+  } catch (err) {
+    dispatch(signOutFail(err))
+    throw err
+  }
+}
+
+/**
+ * get user
  */
 type GetUserResult = ReturnType<typeof signApi.getUser>
 export type DispatchGetUser = () => GetUserResult
@@ -85,7 +113,7 @@ export const getUser: ActionCreator<
 }
 
 /**
- * checkLogin
+ * check login
  */
 let checkLoginInProgress = false
 const checkLoginListeners: Array<{ resolve: (data: boolean) => void; reject: (data: any) => void }> = []
